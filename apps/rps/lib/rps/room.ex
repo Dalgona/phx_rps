@@ -11,7 +11,7 @@ defmodule RPS.Room do
   def new(room_id, owner, owner_name) do
     %__MODULE__{
       id: room_id,
-      owner: owner,
+      owner: owner_name,
       players: [owner_name],
       pid_map: %{owner => owner_name},
       plays: %{owner_name => nil},
@@ -115,7 +115,7 @@ defmodule RPS.Room do
           else
             :playing
           end
-        {:ok, %__MODULE__{plays: updated_plays, status: new_status}}
+        {:ok, %__MODULE__{room|plays: updated_plays, status: new_status}}
     end
   end
 
@@ -131,7 +131,9 @@ defmodule RPS.Room do
 
   @spec owner?(t, pid) :: boolean
 
-  def owner?(%{owner: owner}, process), do: owner == process
+  def owner?(%{owner: owner, pid_map: pid_map}, process) do
+    owner == pid_map[process]
+  end
 
   #
   # Private Functions
