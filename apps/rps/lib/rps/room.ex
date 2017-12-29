@@ -31,6 +31,21 @@ defmodule RPS.Room do
     {new_name, updated_room}
   end
 
+  @spec remove_player(t, binary) :: result(t)
+
+  def remove_player(room, name) do
+    if name in Map.values(room.pid_map) do
+      {:error, :assigned}
+    else
+      updated_room = %__MODULE__{
+        room|
+        players: List.delete(room.players, name),
+        plays: Map.delete(room.plays, name)
+      }
+      {:ok, updated_room}
+    end
+  end
+
   @spec assign_player(t, pid, binary) :: result(t)
 
   def assign_player(room, process, name) do
@@ -71,6 +86,10 @@ defmodule RPS.Room do
   end
 
   @spec start(t) :: result(t)
+
+  def start(%{status: :playing}) do
+    {:error, :already_playing}
+  end
 
   def start(room) do
     with n_players when n_players > 1 <- length(room.players),
@@ -113,10 +132,6 @@ defmodule RPS.Room do
   @spec owner?(t, pid) :: boolean
 
   def owner?(%{owner: owner}, process), do: owner == process
-
-  @spec member?(t, pid) :: boolean
-
-  def member?(%{pid_map: pid_map}, process), do: pid_map[process] != nil
 
   #
   # Private Functions
