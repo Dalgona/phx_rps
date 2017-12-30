@@ -5,13 +5,10 @@ defmodule RPS do
 
   alias RPS.{Room, RoomServer, RoomSupervisor}
 
-  @spec create_room(Room.id, pid, binary) :: any
+  @spec create_room(Room.id, binary) :: any
 
-  def create_room(room_id, owner, owner_name) do
-    Supervisor.start_child RoomSupervisor, [
-      room_id,
-      [owner: owner, owner_name: owner_name]
-    ]
+  def create_room(room_id, owner) do
+    Supervisor.start_child RoomSupervisor, [room_id, [owner: owner]]
   end
 
   @spec add_player(Room.id, binary) :: result(binary)

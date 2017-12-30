@@ -2,7 +2,7 @@ defmodule RPS.RoomServer do
   use GenServer, restart: :transient
   alias RPS.Room
 
-  @type options :: [owner: pid, owner_name: binary]
+  @type options :: [owner: binary]
   @type result :: :ok | {:error, term}
   @type result(type) :: {:ok, type} | {:error, term}
 
@@ -16,7 +16,6 @@ defmodule RPS.RoomServer do
     args = [
       room_id: room_id,
       owner: opts[:owner],
-      owner_name: opts[:owner_name]
     ]
     gen_opts = [name: {:via, Registry, {RPS.Registry, "rps_room_" <> room_id}}]
     GenServer.start_link __MODULE__, args, gen_opts
@@ -63,7 +62,7 @@ defmodule RPS.RoomServer do
   #
 
   def init(args) do
-    {:ok, Room.new(args[:room_id], args[:owner], args[:owner_name])}
+    {:ok, Room.new(args[:room_id], args[:owner])}
   end
 
   def handle_call({:add_player, player}, _, room) do

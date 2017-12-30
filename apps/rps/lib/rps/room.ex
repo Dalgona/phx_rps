@@ -6,15 +6,15 @@ defmodule RPS.Room do
   @type status :: :ready | :playing
   @type result(type) :: {:ok, type} | {:error, term}
 
-  @spec new(id, pid, binary) :: t
+  @spec new(id, binary) :: t
 
-  def new(room_id, owner, owner_name) do
+  def new(room_id, owner) do
     %__MODULE__{
       id: room_id,
-      owner: owner_name,
-      players: [owner_name],
-      pid_map: %{owner => owner_name},
-      plays: %{owner_name => nil},
+      owner: owner,
+      players: [owner],
+      pid_map: %{},
+      plays: %{owner => nil},
       status: :ready
     }
   end
