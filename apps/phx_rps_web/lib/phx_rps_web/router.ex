@@ -19,6 +19,13 @@ defmodule PhxRpsWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/ajax", PhxRpsWeb do
+    pipe_through :api
+
+    post "/rps", RpsController, :create
+    post "/rps/:id/join", RpsController, :join
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", PhxRpsWeb do
   #   pipe_through :api
