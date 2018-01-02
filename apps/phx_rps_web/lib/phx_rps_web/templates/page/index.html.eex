@@ -26,23 +26,28 @@
   </div>
 </div>
 
-<div id="game-room" class="row marketing">
-  <div class="col-lg-12">
-    <div class="alert alert-info">
-      You are the owner of this room.<br>
-      Share this room ID to your friends to invite them: <code>### TODO ###</code>
-    </div>
-    <div>
-      <h4>Players in This Room (You: ### TODO ###)</h4>
-      <ul id="player-list"></ul>
-    </div>
-    <div class="form-group">
-      <button id="start-button" class="btn btn-primary" type="button">Start Game</button>
-    </div>
-    <div id="move-buttons" class="form-group">
-      <button type="button" data-move="rock" class="btn btn-success">Rock</button>
-      <button type="button" data-move="paper" class="btn btn-warning">Paper</button>
-      <button type="button" data-move="scissors" class="btn btn-danger">Scissors</button>
+<div id="game-room-container"></div>
+
+<div style="opacity: 0">
+  <div id="template-game-room" class="row marketing">
+    <div class="col-lg-12">
+      <div class="alert alert-info owner-only">
+        You are the owner of this room.<br>
+        Share this room ID to your friends to invite them: <code class="room-id"></code>
+      </div>
+      <div>
+        <h4>Players in This Room (You: <span class="current-player-name"></span>)</h4>
+        <ul class="player-list"></ul>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary owner-only start-button" type="button">Start Game</button>
+        <button class="btn btn-light leave-button" type="button">Leave Room</button>
+      </div>
+      <div class="form-group move-buttons">
+        <button type="button" data-move="rock" class="btn btn-success">Rock</button>
+        <button type="button" data-move="paper" class="btn btn-warning">Paper</button>
+        <button type="button" data-move="scissors" class="btn btn-danger">Scissors</button>
+      </div>
     </div>
   </div>
 </div>
