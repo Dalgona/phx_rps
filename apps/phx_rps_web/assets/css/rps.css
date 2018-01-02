@@ -1,0 +1,39 @@
+ul.player-list {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  list-style: none;
+}
+
+ul.player-list > li.player {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 5px;
+  padding: 5px 10px;
+  width: 200px;
+  border: 1px dashed silver;
+  border-radius: 3px;
+  text-align: center;
+}
+
+ul.player-list > li.player.decided {
+  border: 1px solid silver;
+  background-color: whitesmoke;
+  font-weight: bold
+}
+
+ul.player-list > li.player.winner {
+  border: 1px solid #008000;
+  background-color: #80FF80;
+}
+
+ul.player-list > li.player span.status {
+  text-transform: capitalize;
+}
