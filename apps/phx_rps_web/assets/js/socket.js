@@ -30,12 +30,12 @@ function GameSocket(roomInfo) {
 
   channel.on("presence_state", state => {
     presences = Presence.syncState(presences, state)
-    that.presenceUpdated(presences, Presence)
+    that.presenceUpdated(presences)
   })
 
   channel.on("presence_diff", diff => {
     presences = Presence.syncDiff(presences, diff)
-    that.presenceUpdated(presences, Presence)
+    that.presenceUpdated(presences)
   })
 
   //
@@ -69,7 +69,7 @@ function GameSocket(roomInfo) {
   this.connectSucceeded = resp => { console.log("Successfuly connected:", resp) }
   /** @type {(response: any) => void} */
   this.connectFailed = resp => { console.warn("Unable to connect:", resp) }
-  /** @type {(presences: any, presence: Presence) => void} */
+  /** @type {(presences: any) => void} */
   this.presenceUpdated = null
   /** @type {(roomId: string) => void} */
   this.roomClosed = null
