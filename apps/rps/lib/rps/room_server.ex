@@ -100,6 +100,7 @@ defmodule RPS.RoomServer do
     with true <- Room.owner?(room, caller),
          {:ok, updated_room} <- Room.start(room)
     do
+      broadcast room, {:rps_game_started, updated_room.id}
       {:reply, :ok, updated_room}
     else
       false -> {:reply, {:error, :not_owner}, room}
@@ -110,6 +111,8 @@ defmodule RPS.RoomServer do
   def handle_call({:play, move}, {caller, _}, room) do
     case Room.play room, caller, move do
       {:ok, updated_room} ->
+        broadcast updated_room,
+          {:rps_play, Room.whois(updated_room, caller), room.id}
         if updated_room.status == :ready do
           result = Room.get_result updated_room
           broadcast updated_room, {:rps_game_finished, result, room.id}

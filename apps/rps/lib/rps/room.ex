@@ -124,8 +124,8 @@ defmodule RPS.Room do
   def get_result(%{plays: plays}) do
     grouped_by_moves = Enum.group_by plays, &elem(&1, 1), &elem(&1, 0)
     case Map.keys grouped_by_moves do
-      [move1, move2] -> grouped_by_moves[winner(move1, move2)]
-      _ -> []
+      [move1, move2] -> {grouped_by_moves[winner(move1, move2)], plays}
+      _ -> {[], plays}
     end
   end
 
@@ -134,6 +134,10 @@ defmodule RPS.Room do
   def owner?(%{owner: owner, pid_map: pid_map}, process) do
     owner == pid_map[process]
   end
+
+  @spec whois(t, pid) :: binary
+
+  def whois(%{pid_map: pid_map}, process), do: pid_map[process]
 
   #
   # Private Functions
