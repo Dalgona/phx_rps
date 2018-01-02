@@ -1,36 +1,48 @@
-<div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+<div id="form-container" class="row marketing">
+  <div class="col-lg-6">
+    <h4>Create a New Room</h4>
+    <%= form_for @conn, "#", [id: "create-form"], fn f -> %>
+      <div class="form-group">
+        <%= text_input f, :player_name, placeholder: "Player Name", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= submit "Create", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-lg-6">
+    <h4>Join Existing Room</h4>
+    <%= form_for @conn, "#", [id: "join-form"], fn f -> %>
+      <div class="form-group">
+        <%= text_input f, :player_name, placeholder: "Player Name", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= text_input f, :room_id, placeholder: "Room ID", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= submit "Join", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
+<div id="game-room" class="row marketing">
+  <div class="col-lg-12">
+    <div class="alert alert-info">
+      You are the owner of this room.<br>
+      Share this room ID to your friends to invite them: <code>### TODO ###</code>
+    </div>
+    <div>
+      <h4>Players in This Room (You: ### TODO ###)</h4>
+      <ul id="player-list"></ul>
+    </div>
+    <div class="form-group">
+      <button id="start-button" class="btn btn-primary" type="button">Start Game</button>
+    </div>
+    <div id="move-buttons" class="form-group">
+      <button type="button" data-move="rock" class="btn btn-success">Rock</button>
+      <button type="button" data-move="paper" class="btn btn-warning">Paper</button>
+      <button type="button" data-move="scissors" class="btn btn-danger">Scissors</button>
+    </div>
   </div>
 </div>
