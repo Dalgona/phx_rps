@@ -95,7 +95,8 @@ defmodule RPS.Room do
     with n_players when n_players > 1 <- length(room.players),
          true <- all_assigned?(room)
     do
-      {:ok, %__MODULE__{room|status: :playing}}
+      plays = for {k, _} <- room.plays, into: %{}, do: {k, nil}
+      {:ok, %__MODULE__{room|status: :playing, plays: plays}}
     else
       n when n <= 1 -> {:error, :not_enough_players}
       false -> {:error, :not_assigned}
