@@ -1,16 +1,14 @@
 defmodule RPS.Room do
-  defstruct [:id, :owner, :players, :pid_map, :plays, :status]
+  defstruct [:owner, :players, :pid_map, :plays, :status]
 
   @type t :: %__MODULE__{}
-  @type id :: binary
   @type status :: :ready | :playing
   @type result(type) :: {:ok, type} | {:error, term}
 
-  @spec new(id, binary) :: t
+  @spec new(binary) :: t
 
-  def new(room_id, owner) do
+  def new(owner) do
     %__MODULE__{
-      id: room_id,
       owner: owner,
       players: [owner],
       pid_map: %{},

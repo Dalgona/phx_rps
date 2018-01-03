@@ -32,16 +32,15 @@ defmodule PhxRpsWeb.RpsRoomChannel do
     {:noreply, socket}
   end
 
-  def handle_info({:rps_room_closed, room_id}, socket) do
-    push socket, "rps_room_closed", %{room_id: room_id}
+  def handle_info(:rps_room_closed, socket) do
+    push socket, "rps_room_closed", %{}
     {:stop, :normal, socket}
   end
 
-  def handle_info({:rps_game_finished, {winners, plays}, room_id}, socket) do
+  def handle_info({:rps_game_finished, {winners, plays}}, socket) do
     push socket, "rps_game_finished", %{
       winners: winners,
       plays: plays,
-      room_id: room_id
     }
     {:noreply, socket}
   end

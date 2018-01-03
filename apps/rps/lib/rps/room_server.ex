@@ -14,7 +14,6 @@ defmodule RPS.RoomServer do
 
   def start_link(room_id, opts) do
     args = [
-      room_id: room_id,
       owner: opts[:owner],
     ]
     gen_opts = [name: {:via, Registry, {RPS.Registry, "rps_room_" <> room_id}}]
@@ -62,7 +61,7 @@ defmodule RPS.RoomServer do
   #
 
   def init(args) do
-    {:ok, Room.new(args[:room_id], args[:owner])}
+    {:ok, Room.new(args[:owner])}
   end
 
   def handle_call({:add_player, player}, _, room) do
@@ -86,7 +85,7 @@ defmodule RPS.RoomServer do
 
   def handle_call(:leave, {caller, _}, room) do
     if Room.owner? room, caller do
-      broadcast room, {:rps_room_closed, room.id}
+      broadcast room, :rps_room_closed
       {:stop, :normal, :ok, room}
     else
       case Room.leave room, caller do
@@ -112,7 +111,7 @@ defmodule RPS.RoomServer do
       {:ok, updated_room} ->
         if updated_room.status == :ready do
           result = Room.get_result updated_room
-          broadcast updated_room, {:rps_game_finished, result, room.id}
+          broadcast updated_room, {:rps_game_finished, result}
         end
         {:reply, :ok, updated_room}
       {:error, _} = error -> {:reply, error, room}
