@@ -9,22 +9,22 @@ defmodule PhxRpsWeb.RpsRoomChannel do
   end
 
   def handle_in("rps_start_game", _payload, socket) do
-    :ok = RPS.start_game socket.assigns.room_id
+    room_id = socket.assigns.room_id
+    :ok = RPS.start_game room_id
+    broadcast! socket, "rps_game_started", %{room_id: room_id}
     {:noreply, socket}
   end
 
   def handle_in("rps_play", %{"move" => move}, socket) do
-    :ok = RPS.play socket.assigns.room_id, String.to_existing_atom(move)
+    %{assigns: %{room_id: room_id, player_name: player_name}} = socket
+    :ok = RPS.play room_id, String.to_existing_atom(move)
+    broadcast! socket, "rps_play", %{by: player_name, room_id: room_id}
     {:noreply, socket}
   end
 
   def terminate(_, socket) do
     RPS.leave socket.assigns.room_id
   end
-
-  #
-  # TODO (refactor): broadcast some events directly from channel
-  #
 
   def handle_info(:after_join, socket) do
     push socket, "presence_state", Presence.list(socket)
@@ -37,22 +37,12 @@ defmodule PhxRpsWeb.RpsRoomChannel do
     {:stop, :normal, socket}
   end
 
-  def handle_info({:rps_game_started, room_id}, socket) do
-    push socket, "rps_game_started", %{room_id: room_id}
-    {:noreply, socket}
-  end
-
   def handle_info({:rps_game_finished, {winners, plays}, room_id}, socket) do
     push socket, "rps_game_finished", %{
       winners: winners,
       plays: plays,
       room_id: room_id
     }
-    {:noreply, socket}
-  end
-
-  def handle_info({:rps_play, who, room_id}, socket) do
-    push socket, "rps_play", %{by: who, room_id: room_id}
     {:noreply, socket}
   end
 end
