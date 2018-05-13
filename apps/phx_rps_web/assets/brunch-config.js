@@ -47,15 +47,13 @@ exports.config = {
     elmBrunch: {
       elmFolder: "elm",
       mainModules: ["src/Main.elm"],
-      outputFolder: "../js",
-      outputFile: "elm.js",
-      makeParameters: ["--warn"]
+      outputFolder: "../vendor",
+      makeParameters: ["--warn", "--debug"]
     },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [
         /vendor/,
-        "js/elm.js"
       ]
     }
   },
