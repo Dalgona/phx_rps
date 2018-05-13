@@ -4,44 +4,79 @@ module UI exposing (lobbyForm)
 import Model exposing (..)
 import Msg exposing (Msg(..))
 import Html exposing (..)
-import Html.Attributes exposing (checked, name, type_)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 
 
 lobbyForm : Lobby -> Html Msg
 lobbyForm lobby =
   let
+    nameField = textField "Player Name" lobby.name ChangeName
+    roomIdField = textField "Room ID" lobby.roomId ChangeRoomId
     inputFields =
       case lobby.mode of
         Create -> [ nameField ]
-        Join -> [ nameField, roomField ]
+        Join -> [ nameField, roomIdField ]
   in
-    div []
-      [ div []
-          [ button [ onClick (ChangeLobbyMode Create) ] [ text "Create" ]
-          , button [ onClick (ChangeLobbyMode Join) ] [ text "Join" ]
-          ]
-      , table [] inputFields
-      , div []
-          [ button [] [ text "Go" ]
-          ]
-      ]
+    Html.form [ class "form-horizontal" ] <|
+      [ modeTabs lobby ]
+      ++ inputFields
+      ++ [ goButton lobby.mode ]
 
 
 -- Internal Functions
 
 
-nameField : Html Msg
-nameField =
-  tr []
-    [ th [] [ text "Name" ]
-    , td [] [ input [ type_ "text", onInput ChangeName ] [] ]
+modeTabs : Lobby -> Html Msg
+modeTabs lobby =
+  div [ class "form-group" ]
+    [ div [ class "btn-group col-sm-offset-2 col-sm-10" ]
+        [ modeTabButton "Create" Create lobby
+        , modeTabButton "Join" Join lobby
+        ]
     ]
 
 
-roomField : Html Msg
-roomField =
-  tr []
-    [ th [] [ text "Room ID" ]
-    , td [] [ input [ type_ "text", onInput ChangeRoomId ] [] ]
+modeTabButton : String -> LobbyMode -> Lobby -> Html Msg
+modeTabButton str mode lobby =
+  button
+    [ type_ "button"
+    , classList
+        [ ("btn", True)
+        , ("btn-default", (lobby.mode /= mode))
+        , ("btn-info", (lobby.mode == mode))
+        ]
+    , onClick (ChangeLobbyMode mode)
+    ]
+    [ text str ]
+
+
+textField : String -> String -> (String -> Msg) -> Html Msg
+textField title content msg =
+  div [ class "form-group" ]
+    [ label [ class "col-sm-2 control-label" ] [ text title ]
+    , div [ class "col-sm-10" ]
+        [ input
+          [ class "form-control"
+          , placeholder title
+          , type_ "text"
+          , value content
+          , onInput msg
+          ]
+          []
+        ]
+    ]
+
+
+goButton : LobbyMode -> Html Msg
+goButton mode =
+  div [ class "form-group" ]
+    [ div [ class "col-sm-offset-2 col-sm-10" ]
+        [ button
+            [ type_ "button"
+            , class "btn btn-primary"
+            , onClick Noop
+            ]
+            [ text "Go" ]
+        ]
     ]
