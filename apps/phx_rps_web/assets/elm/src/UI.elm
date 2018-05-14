@@ -5,7 +5,7 @@ import Model exposing (..)
 import Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (onClick, onInput, onSubmit)
 
 
 lobbyForm : Model -> Html Msg
@@ -19,13 +19,27 @@ lobbyForm model =
         Create -> [ nameField ]
         Join -> [ nameField, roomIdField ]
   in
-    Html.form [ class "form-horizontal" ] <|
+    phxForm lobby.csrfToken
+      [ class "form-horizontal"
+      , action "#"
+      , method "post"
+      , onSubmit Noop
+      ] <|
       [ modeTabs lobby ]
       ++ inputFields
       ++ [ goButton model ]
 
 
 -- Internal Functions
+
+
+phxForm : String -> List (Attribute Msg) -> List (Html Msg) -> Html Msg
+phxForm csrfToken attrs children =
+  Html.form attrs <|
+    [ input [ type_ "hidden", name "_csrf_token", value csrfToken ] []
+    , input [ type_ "hidden", name "_utf8", value "✓" ] []
+    ]
+    ++ children
 
 
 modeTabs : Lobby -> Html Msg
@@ -73,12 +87,12 @@ goButton : Model -> Html Msg
 goButton model =
   div [ class "form-group" ]
     [ div [ class "col-sm-offset-2 col-sm-10" ]
-        [ button
-            [ type_ "button"
+        [ input
+            [ type_ "submit"
             , class "btn btn-primary"
-            , onClick Noop
             , disabled (not model.canEnter)
+            , value "Go"
             ]
-            [ text "Go" ]
+            []
         ]
     ]

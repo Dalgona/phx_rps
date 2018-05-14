@@ -1,13 +1,19 @@
 module Model exposing (..)
 
 
+type alias Flags =
+  { csrfToken : String
+  }
+
+
 type LobbyMode
   = Create
   | Join
 
 
 type alias Lobby =
-  { mode : LobbyMode
+  { csrfToken : String
+  , mode : LobbyMode
   , name : String
   , roomId : String
   }
@@ -19,10 +25,11 @@ type alias Model =
   }
 
 
-init : Model
-init =
+init : Flags -> Model
+init flags =
   { lobby =
-      { mode = Create
+      { csrfToken = flags.csrfToken
+      , mode = Create
       , name = ""
       , roomId = ""
       }

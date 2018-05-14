@@ -9,6 +9,9 @@
 
     <title>Hello PhxRps!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <script>
+      window.csrfToken = "<%= @csrf_token %>";
+    </script>
   </head>
 
   <body>

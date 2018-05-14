@@ -7,8 +7,8 @@ import Model exposing (..)
 import UI exposing (..)
 
 
-main : Program Never Model Msg
-main = program
+main : Program Flags Model Msg
+main = programWithFlags
   { init = init
   , update = update
   , view = view
@@ -44,6 +44,6 @@ subscriptions model =
   Sub.none
 
 
-init : (Model, Cmd Msg)
-init =
-  (Model.init, Cmd.none)
+init : Flags -> (Model, Cmd Msg)
+init flags =
+  (Model.init flags, Cmd.none)
