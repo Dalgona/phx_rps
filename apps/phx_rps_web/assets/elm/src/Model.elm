@@ -1,6 +1,9 @@
 module Model exposing (..)
 
 
+import Http
+
+
 type alias Flags =
   { csrfToken : String
   }
@@ -19,9 +22,18 @@ type alias Lobby =
   }
 
 
+type alias Room =
+  { roomId : String
+  , playerName : String
+  , isOwner : Bool
+  }
+
+
 type alias Model =
   { lobby : Lobby
   , canEnter : Bool
+  , currentRoom : Maybe Room
+  , lastError : Maybe Http.Error
   }
 
 
@@ -34,6 +46,8 @@ init flags =
       , roomId = ""
       }
   , canEnter = False
+  , currentRoom = Nothing
+  , lastError = Nothing
   }
 
 

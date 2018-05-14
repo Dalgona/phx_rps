@@ -4,6 +4,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Msg exposing (..)
 import Model exposing (..)
+import RpsClient exposing (..)
 import UI exposing (..)
 
 
@@ -27,6 +28,18 @@ update msg model =
 
     ChangeRoomId newRoomId ->
       (setLobbyRoomId newRoomId model, Cmd.none)
+
+    SendAjax Create ->
+      (model, sendCreateRequest model.lobby)
+
+    SendAjax Join ->
+      (model, sendJoinRequest model.lobby)
+
+    GotAjaxResponse (Ok room) ->
+      ({model | currentRoom = Just room, lastError = Nothing}, Cmd.none)
+
+    GotAjaxResponse (Err error) ->
+      ({model | lastError = Just error}, Cmd.none)
 
     Noop ->
       (model, Cmd.none)

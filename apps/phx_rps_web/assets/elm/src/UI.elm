@@ -23,7 +23,7 @@ lobbyForm model =
       [ class "form-horizontal"
       , action "#"
       , method "post"
-      , onSubmit Noop
+      , onSubmit (SendAjax lobby.mode)
       ] <|
       [ modeTabs lobby ]
       ++ inputFields
