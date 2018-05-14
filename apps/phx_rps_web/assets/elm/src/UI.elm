@@ -8,9 +8,10 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 
 
-lobbyForm : Lobby -> Html Msg
-lobbyForm lobby =
+lobbyForm : Model -> Html Msg
+lobbyForm model =
   let
+    lobby = model.lobby
     nameField = textField "Player Name" lobby.name ChangeName
     roomIdField = textField "Room ID" lobby.roomId ChangeRoomId
     inputFields =
@@ -21,7 +22,7 @@ lobbyForm lobby =
     Html.form [ class "form-horizontal" ] <|
       [ modeTabs lobby ]
       ++ inputFields
-      ++ [ goButton lobby.mode ]
+      ++ [ goButton model ]
 
 
 -- Internal Functions
@@ -68,14 +69,15 @@ textField title content msg =
     ]
 
 
-goButton : LobbyMode -> Html Msg
-goButton mode =
+goButton : Model -> Html Msg
+goButton model =
   div [ class "form-group" ]
     [ div [ class "col-sm-offset-2 col-sm-10" ]
         [ button
             [ type_ "button"
             , class "btn btn-primary"
             , onClick Noop
+            , disabled (not model.canEnter)
             ]
             [ text "Go" ]
         ]

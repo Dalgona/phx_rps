@@ -35,7 +35,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
   div []
-    [ lobbyForm model.lobby
+    [ lobbyForm model
     ]
 
 
@@ -46,4 +46,4 @@ subscriptions model =
 
 init : (Model, Cmd Msg)
 init =
-  (Model (Lobby Create "" ""), Cmd.none)
+  (Model.init, Cmd.none)
