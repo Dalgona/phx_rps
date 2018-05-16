@@ -39,7 +39,7 @@ update msg model =
       ({model | currentRoom = Just room, lastError = Nothing}, Cmd.none)
 
     GotAjaxResponse (Err error) ->
-      ({model | lastError = Just error}, Cmd.none)
+      ({model | lastError = Just (getErrorString error)}, Cmd.none)
 
     Noop ->
       (model, Cmd.none)
@@ -48,7 +48,8 @@ update msg model =
 view : Model -> Html Msg
 view model =
   div []
-    [ lobbyForm model
+    [ alert "danger" model.lastError
+    , lobbyForm model
     ]
 
 

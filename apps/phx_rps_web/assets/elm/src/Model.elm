@@ -33,7 +33,7 @@ type alias Model =
   { lobby : Lobby
   , canEnter : Bool
   , currentRoom : Maybe Room
-  , lastError : Maybe Http.Error
+  , lastError : Maybe String
   }
 
 

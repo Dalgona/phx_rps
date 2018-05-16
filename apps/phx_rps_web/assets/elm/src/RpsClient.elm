@@ -37,6 +37,38 @@ sendJoinRequest lobby =
     |> Http.send GotAjaxResponse
 
 
+getErrorString : Error -> String
+getErrorString httpError =
+  case httpError of
+    BadUrl _ -> "Bad request URL"
+
+    Timeout -> "The server is taking too much time to respond"
+
+    NetworkError -> "Unspecified network error"
+
+    BadPayload _ _ -> "The server sent an unexpected message"
+
+    BadStatus response ->
+      let
+        errMsg = decodeString (field "error" string) response.body
+      in
+        case errMsg of
+          Ok "no_such_room" ->
+            "The specified room is not found"
+
+          Ok "already_playing" ->
+            "The game has already started"
+
+          Ok "not_enough_players" ->
+            "2 or more players are required to start a game"
+
+          Ok "not_owner" ->
+            "Only the owner of this room can perform this action"
+
+          _ ->
+            "Unknown error"
+
+
 formBody : List (String, String) -> Body
 formBody params =
   params

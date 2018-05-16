@@ -1,4 +1,4 @@
-module UI exposing (lobbyForm)
+module UI exposing (alert, lobbyForm)
 
 
 import Model exposing (..)
@@ -6,6 +6,16 @@ import Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
+
+
+alert : String -> Maybe String -> Html Msg
+alert alertClass message =
+  case message of
+    Nothing ->
+      text ""
+
+    Just str ->
+      div [ class ("alert alert-" ++ alertClass) ] [ text str ]
 
 
 lobbyForm : Model -> Html Msg
